@@ -2,42 +2,33 @@
 
 ## Célkitűzés
 
-Az előadással egybekötött gyakorlat célja, hogy bemutassuk a `NoSQL`
-adatbázisok telepítését, használatát és különféle alkalmazásokba való
-integrációs lehetőségeit. A gyakorlat elvégzésével a hallgató képes lesz
-egy `NoSQL` alapú webes és asztali alkalmazás összeállítására, mely
-adatfogadásra és adat kiszolgálásra is alkalmas lehet adattárház és BI
-rendszerek irányába.
+Az előadással egybekötött gyakorlat célja, hogy bemutassuk a `NoSQL` adatbázisok telepítését, használatát és különféle alkalmazásokba való integrációs lehetőségeit. A gyakorlat elvégzésével a hallgató képes lesz egy `NoSQL` alapú webes és asztali alkalmazás összeállítására, mely adatfogadásra és adat kiszolgálásra is alkalmas lehet adattárház és BI rendszerek irányába.
 
 ## Előfeltételek
--------------
 
 A gyakorlat elvégzéséhez szükséges eszközök Windows platformot és Ubuntu
 virtuális gépet (pl. VirtualBox) feltételezve:
 
--   `REDIS` telepítése és a 6379-es port megnyitása, hogy az
+*   `REDIS` telepítése és a 6379-es port megnyitása, hogy az
     alkalmazások tudjanak kapcsolódni:
 
-    -   [*http://redis.io/topics/quickstart*](http://redis.io/topics/quickstart)
+*   [*http://redis.io/topics/quickstart*](http://redis.io/topics/quickstart)
 
-    -   VirtualBox-&gt;Machine-&gt;Settings-&gt;Network-&gt;Port forward
+*   VirtualBox->Machine->Settings->Network->Port forward
         ([*http://www.howtogeek.com/122641/how-to-forward-ports-to-a-virtual-machine-and-use-it-as-a-server/*](http://www.howtogeek.com/122641/how-to-forward-ports-to-a-virtual-machine-and-use-it-as-a-server/))
 
 ![](media/image1.png){width="4.28125in" height="2.28125in"}
 
 ### REDIS
 
-A REDIS egy rendkívül gyors egyszerű kulcs-érték pár amely a memóriát
-kihasználva nagyon gyors válaszidővel is képes rendelkezni.
+A REDIS egy rendkívül gyors egyszerű kulcs-érték pár amely a memóriát kihasználva nagyon gyors válaszidővel is képes rendelkezni.
 
-A REDIS cluster üzemmódot is támogat az új verzióban, így a
-skálázhatóság is biztosított.
+A REDIS cluster üzemmódot is támogat az új verzióban, így a skálázhatóság is biztosított.
 
 #### Telepítés
 
 A telepítés menete a REDIS weboldalán megtalálható:
-([*http://redis.io/topics/quickstart*](http://redis.io/topics/quickstart)
-), a főbb parancsok tömören:
+([*http://redis.io/topics/quickstart*](http://redis.io/topics/quickstart)), a főbb parancsok tömören:
 
 ```shell
 sudo apt-get update
@@ -55,8 +46,7 @@ ls
 sudo ./install\_server.sh
 ```
 
-Sikeres telepítést követően a szolgáltatás automatikusan el is indul,
-melyhez próbáljuk ki a konzolos csatlakozást:
+Sikeres telepítést követően a szolgáltatás automatikusan el is indul, melyhez próbáljuk ki a konzolos csatlakozást:
 
 ```shell
 redis-cli
@@ -73,8 +63,7 @@ sudo service redis\_6379 stop
 
 Próbáljuk ki a következő alap REDIS parancsokat néhány példa adaton.
 
-REDIS-ben több adatbázisunk is lehet, melyek egy számmal vannak
-reprezentálva, az alapértelmezett a 0-s adatbázis.
+REDIS-ben több adatbázisunk is lehet, melyek egy számmal vannak reprezentálva, az alapértelmezett a 0-s adatbázis.
 
 Válasszuk ki az alapértelmezett adatbázist (nem kötelező):
 
@@ -129,8 +118,7 @@ DEL mylist # (integer) 1
 ## Project létrehozása
 
 
-![](media/image2.png){width="5.445859580052494in"
-height="4.017531714785652in"}
+![](media/image2.png){width="5.445859580052494in" height="4.017531714785652in"}
 
 Következő feladatként készítsünk egy JavaFX alapú chat alkalmazást. Az alkalmazás használatához a felhasználóknak meg kell adni a nevüket, majd ezt követően különböző szobákat tud létrehozni, melyekbe üzeneteket írhatnak. Az üzenetek, az új szobák létrehozása, valamint az online felhasználók listája az alkalmazásban automatikusan megjelennek és frissülnek.
 
