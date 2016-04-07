@@ -703,17 +703,11 @@ Valósítson meg egy új képernyőt, amely egy kördiagrammon ábrázolja az eg
 Lépések:
 
 1.  Új gomb felvétel a képernyőn
-
-![Grafikun nézet indító gomb](img/button.png)
-
-1.  ChatDBManager *getRoomsLength()* függvény implementálása
-
-2.  Grafikon kirajzoló felület (fxml) és kontroller létrehozása
-
-    a.  PieChart példa:
-        [*http://docs.oracle.com/javafx/2/charts/pie-chart.htm\#CIHFDADD*](http://docs.oracle.com/javafx/2/charts/pie-chart.htm#CIHFDADD)
-
-3.  Vissza gomb létrehozása
+    * ![Grafikun nézet indító gomb](img/button.png)
+2.  `ChatDBManager` `getRoomsLength()` függvény implementálása
+3.  Grafikon kirajzoló felület (fxml) és kontroller létrehozása
+    *  PieChart példa: [*http://docs.oracle.com/javafx/2/charts/pie-chart.htm\#CIHFDADD*](http://docs.oracle.com/javafx/2/charts/pie-chart.htm#CIHFDADD)
+4.  Vissza gomb létrehozása
 
 ## Bónusz feladat:
 
