@@ -11,13 +11,11 @@ virtuális gépet (pl. VirtualBox) feltételezve:
 
 *   `REDIS` telepítése és a 6379-es port megnyitása, hogy az
     alkalmazások tudjanak kapcsolódni:
-
-*   [*http://redis.io/topics/quickstart*](http://redis.io/topics/quickstart)
-
-*   VirtualBox->Machine->Settings->Network->Port forward
+    *   [*http://redis.io/topics/quickstart*](http://redis.io/topics/quickstart)
+    *   VirtualBox->Machine->Settings->Network->Port forward
         ([*http://www.howtogeek.com/122641/how-to-forward-ports-to-a-virtual-machine-and-use-it-as-a-server/*](http://www.howtogeek.com/122641/how-to-forward-ports-to-a-virtual-machine-and-use-it-as-a-server/))
 
-![](media/image1.png){width="4.28125in" height="2.28125in"}
+![Redis](img/redis.png)
 
 ### REDIS
 
@@ -118,7 +116,7 @@ DEL mylist # (integer) 1
 ## Project létrehozása
 
 
-![](media/image2.png){width="5.445859580052494in" height="4.017531714785652in"}
+![Alkalmazás](img/app.png)
 
 Következő feladatként készítsünk egy JavaFX alapú chat alkalmazást. Az alkalmazás használatához a felhasználóknak meg kell adni a nevüket, majd ezt követően különböző szobákat tud létrehozni, melyekbe üzeneteket írhatnak. Az üzenetek, az új szobák létrehozása, valamint az online felhasználók listája az alkalmazásban automatikusan megjelennek és frissülnek.
 
@@ -698,8 +696,7 @@ jelölt szoba nevére, akkor az váltson vissza nem vastagra
 
 ## 5. Grafikon kirajzolás szobák statisztikájáról:
 
-![](media/image3.png){width="6.222929790026247in"
-height="4.808412073490814in"}
+![Grafikon kinézete](img/graph.png)
 
 Valósítson meg egy új képernyőt, amely egy kördiagrammon ábrázolja az egyes szobákba érkezett üzeneteket számát. Képernyőn jelenjen meg egy jelmagyarázat és egy vissza gomb is, mellyel az előző nézetre lehet visszanavigálni. Valamint a szobanevek után zárójelben jelenjen meg az üzenetek száma.
 
@@ -707,8 +704,7 @@ Lépések:
 
 1.  Új gomb felvétel a képernyőn
 
-![](media/image4.png){width="1.5753204286964129in"
-height="1.1328149606299212in"}
+![Grafikun nézet indító gomb](img/button.png)
 
 1.  ChatDBManager *getRoomsLength()* függvény implementálása
 
