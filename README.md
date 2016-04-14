@@ -2,7 +2,28 @@
 
 ## Célkitűzés
 
-Az előadással egybekötött gyakorlat célja, hogy bemutassuk a `NoSQL` adatbázisok telepítését, használatát és különféle alkalmazásokba való integrációs lehetőségeit. A gyakorlat elvégzésével a hallgató képes lesz egy `NoSQL` alapú webes és asztali alkalmazás összeállítására, mely adatfogadásra és adat kiszolgálásra is alkalmas lehet adattárház és BI rendszerek irányába.
+Az előadással egybekötött gyakorlat célja, hogy bemutassuk a `NoSQL` (**N**ot **O**nly **SQL**) adatbázisok telepítését, használatát és különféle alkalmazásokba való integrációs lehetőségeit. A gyakorlat elvégzésével a hallgató képes lesz egy `NoSQL` alapú webes és asztali alkalmazás összeállítására, mely adatfogadásra és adat kiszolgálásra is alkalmas lehet adattárház és BI rendszerek irányába.
+
+## NoSQL adatbázisok
+
+### NoSQL vs. RDBMS
+![NoSQl](http://blog.monitis.com/wp-content/uploads/2011/05/052211_1952_PickingtheR2.png)
+
+[forrás: http://www.monitis.com/blog/2011/05/22/picking-the-right-nosql-database-tool](http://www.monitis.com/blog/2011/05/22/picking-the-right-nosql-database-tool)
+
+### Típusai:
+
+1. Kulcs-érték alapú
+ * **REDIS**, Voldemort, Riak
+2. Oszlopos (vagy tabulált) adatbázis
+ * Cassandra, HBase
+3. Dokumentum alapú
+ * MongoDb
+4. Gráf alapú
+ * Neo4J, InfoGrid, Infinite Graph
+5. Objektum adatbázisok
+ * OrientDB
+ 
 
 ## Előfeltételek
 
