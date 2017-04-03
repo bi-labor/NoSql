@@ -27,58 +27,17 @@ Az előadással egybekötött gyakorlat célja, hogy bemutassuk a `NoSQL` (**N**
 
 ## Előfeltételek
 
-A gyakorlat elvégzéséhez szükséges eszközök Windows platformot és Ubuntu
-virtuális gépet (pl. VirtualBox) feltételezve:
+A gyakorlat elvégzéséhez nem szükséges külön Redis telepítése, azt a 91.134.196.66 címen biztosítunk. A Redis kipróbálására pedig lehetőség van az https://try.redis.io oldalon.
 
-*   `REDIS` telepítése és a 6379-es port megnyitása, hogy az
-    alkalmazások tudjanak kapcsolódni:
-    *   [*http://redis.io/topics/quickstart*](http://redis.io/topics/quickstart)
-    *   VirtualBox->Machine->Settings->Network->Port forward
-        ([*http://www.howtogeek.com/122641/how-to-forward-ports-to-a-virtual-machine-and-use-it-as-a-server/*](http://www.howtogeek.com/122641/how-to-forward-ports-to-a-virtual-machine-and-use-it-as-a-server/))
+## REDIS
 
-![Redis](img/redis.png)
+A REDIS egy rendkívül gyors, egyszerű kulcs-érték pár tároló, amely nagyrészt a memóriában dolgozva nagyon alacsony válaszidővel is képes rendelkezni. Ugyanakkor a perzisztencia is biztosított megkötésekkel, létezik snapshot szerű állapot mentés, illetve folyamatos írási napló alapú perzisztencia is. Ezekről bővebben itt lehet olvasni:
 
-### REDIS
-
-A REDIS egy rendkívül gyors egyszerű kulcs-érték pár amely a memóriát kihasználva nagyon gyors válaszidővel is képes rendelkezni.
+https://redis.io/topics/persistence
 
 A REDIS cluster üzemmódot is támogat az új verzióban, így a skálázhatóság is biztosított.
 
-#### Telepítés
-
-A telepítés menete a REDIS weboldalán megtalálható:
-([*http://redis.io/topics/quickstart*](http://redis.io/topics/quickstart)), a főbb parancsok tömören:
-
-```shell
-sudo apt-get update
-sudo apt-get install build-essential
-sudo apt-get install tcl8.5
-wget http://download.redis.io/releases/redis-stable.tar.gz
-tar xzf redis-stable tar.gz
-cd redis-stable/
-make
-make test
-sudo make install
-ls
-cd utils/
-ls
-sudo ./install\_server.sh
-```
-
-Sikeres telepítést követően a szolgáltatás automatikusan el is indul, melyhez próbáljuk ki a konzolos csatlakozást:
-
-```shell
-redis-cli
-```
-
-Szolgáltatásindítás és leállítás:
-
-```shell
-sudo service redis\_6379 start
-sudo service redis\_6379 stop
-```
-
-#### REDIS konzol kezelése
+### REDIS konzol kezelése
 
 Próbáljuk ki a következő alap REDIS parancsokat néhány példa adaton.
 
@@ -121,7 +80,7 @@ PSUBSCRIBE my\*
 PUBLUSH mychannel “test message”
 ```
 
-##### List példa:
+#### List példa:
 
 ```shell
 LPUSH mylist a # (integer) 1
@@ -157,7 +116,7 @@ Hozzunk létre egy `chat` nevű package-t, abban pedig egy `ChatDBManager` Java 
 ```java
 public class ChatDBManager {
 
-    private static String REDIS_HOST = "string.hu";
+    private static String REDIS_HOST = "91.134.196.66";
     private static Integer REDIS_DB = 1;
 
 
@@ -733,6 +692,3 @@ Lépések:
 ## Bónusz feladat:
 
 Grafikon folyamatosan frissüljön új üzenet érkezésekor.
-
-# Visszajelzés:
-[*http://goo.gl/forms/Uqetd4oLgp*](http://goo.gl/forms/Uqetd4oLgp)
