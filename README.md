@@ -119,17 +119,13 @@ public class ChatDBManager {
     private static String REDIS_HOST = "91.134.196.66";
     private static Integer REDIS_DB = 1;
 
+    private static final ChatDBManager instance = new ChatDBManager();
 
-    public static ChatDBManager instance = null;
-
-    protected ChatDBManager() {
+    private ChatDBManager() {
 
     }
 
     public static ChatDBManager getInstance() {
-        if (instance == null) {
-            instance = new ChatDBManager();
-        }
         return instance;
     }
 }
