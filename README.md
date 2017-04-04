@@ -104,7 +104,7 @@ Első lépésként hozzunk létre WebStorm-ban egy Java projektet.
 
 Ezután töltsük le a Redis eléréséhez a `Jedis` nevezetű Java osztálykönyvtárat az alábbi URL-ről:
 
-[*http://search.maven.org/remotecontent?filepath=redis/clients/jedis/2.8.1/jedis-2.8.1.jar*](http://search.maven.org/remotecontent?filepath=redis/clients/jedis/2.8.1/jedis-2.8.1.jar)
+http://central.maven.org/maven2/redis/clients/jedis/2.9.0/jedis-2.9.0.jar
 
 A letöltött jar fájlt másoljuk be a projektünk alá, majd importáljuk be. Ezt a File/Project Structure/Libraries menüpont alatt tehetjük meg.
 
@@ -119,14 +119,14 @@ public class ChatDBManager {
     private static String REDIS_HOST = "91.134.196.66";
     private static Integer REDIS_DB = 1;
 
-    private static final ChatDBManager instance = new ChatDBManager();
+    private static final ChatDBManager INSTANCE = new ChatDBManager();
 
     private ChatDBManager() {
 
     }
 
     public static ChatDBManager getInstance() {
-        return instance;
+        return INSTANCE;
     }
 }
 ```
@@ -177,22 +177,28 @@ Hozzunk létre egy metódust a jelenlévő felhasználók lekéréséhez:
 public List<String> getOnlineUsers() {
     ScanParams params = new ScanParams();
     params.match("online:*");
+
+    //Scan creates a REDIS cursor based iterator, which starts at 0 and
+    //terminates when the result is 0, see: https://redis.io/commands/scan
     ScanResult<String> scanResult = jedis.scan("0", params);
     String nextCursor = scanResult.getStringCursor();
+
     boolean scanEnd = false;
-    ArrayList<String> users = new ArrayList<>();
+    List<String> users = new ArrayList<>();
     while (!scanEnd) {
         for (String key : scanResult.getResult()) {
             users.add(key.replaceFirst("online:", ""));
         }
+
         scanResult = jedis.scan(nextCursor, params);
         nextCursor = scanResult.getStringCursor();
+
         if (nextCursor.equals("0")) {
             scanEnd = true;
         }
     }
     return users;
-}
+}	
 ```
 
 
@@ -245,7 +251,7 @@ public String getCurrentRoom() {
 
 public Map<String,Long> getRoomsLength(){
 	//TODO: implement
-        return null;
+        return Collections.emptyMap();
 }
 ```
 
@@ -317,15 +323,19 @@ public class MainController implements Initializable {
 
     public void btnSubmit(ActionEvent actionEvent) throws IOException {
         if (!"".equals(username.getText())) {
-            ChatDBManager.getInstance().registerUser(username.getText());
+            //Register the user within the database
+            ChatDBManager.getInstance().registerUser(username.getText().replaceAll("[^A-Za-z0-9]", ""));
+            
+            //Load the chat interface and attach it to a new scene
             Parent parent = FXMLLoader.load(getClass().getResource("/chat/chat.fxml"));
             Scene scene = new Scene(parent);
+            
+            //Set the new scene as our current scene
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.show();
         }
     }
-
 }
 ```
 
@@ -426,60 +436,75 @@ Készítsük el az initialize metódusban hivatkozott további inicializáló
 függvényeket:
 
 ```java
-private void loadOnlineUsers() {
-    online.getChildren().clear();
-    List<String> onlineUsers = ChatDBManager.getInstance().getOnlineUsers();
-    for (String onlineUser : onlineUsers) {
-        Label user = new Label(onlineUser);
-        if (onlineUser.equals(ChatDBManager.getInstance().getCurrentUser())) {
-            user.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+    private void loadOnlineUsers() {
+        //Clear the current list
+        online.getChildren().clear();
+        
+        //Fetch the currently onlnie users from the database and append them as labels to the online tag
+        List<String> onlineUsers = ChatDBManager.getInstance().getOnlineUsers();
+        for (String onlineUser : onlineUsers) {
+            Label user = new Label(onlineUser);
+            
+            //If the user is the current user make their name bold
+            if (onlineUser.equals(ChatDBManager.getInstance().getCurrentUser())) {
+                user.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+            }
+            
+            online.getChildren().add(user);
         }
-        online.getChildren().add(user);
     }
-}
 
-private void addMessage(String msg) {
-    String[] msgParts = msg.split(":", 3);
-    Label date = new Label(new Timestamp(Long.parseLong(msgParts[0])).toString());
-    date.setId("date");
-    date.setPrefWidth(200);
-    Label user = new Label("@" + msgParts[1]);
-    user.setPrefWidth(100);
-    HBox hBox = new HBox();
-    hBox.getChildren().add(date);
-    hBox.getChildren().add(user);
-    hBox.getChildren().add(new Text(msgParts[2]));
-    hBox.setPrefHeight(20);
-    hBox.setSpacing(10);
-    hBox.setPadding(new Insets(5, 5, 5, 5));
-    hBox.setStyle("-fx-background-color: #DFDFDF; -fx-border-color:  transparent transparent gray transparent");
-    messages.getChildren().add(hBox);
-    messageScroll.setVvalue(1.0);
-}
-
-private void addRoom(String room) {
-    Tab tab = new Tab(room);
-    tab.setId(room);
-    VBox messagesVBox = new VBox();
-    messagesVBox.setId("messages");
-    tab.setContent(messagesVBox);
-    roomsTabPane.getTabs().add(tab);
-}
-
-private void loadRooms() {
-    List<String> rooms = ChatDBManager.getInstance().getRooms();
-    for (String room : rooms) {
-        addRoom(room);
+    private void addMessage(String msg) {
+        //Messages are stored in the follwign format timestamp:user:message text
+        String[] msgParts = msg.split(":", 3);
+        
+        //Timestamp
+        Label date = new Label(new Timestamp(Long.parseLong(msgParts[0])).toString());
+        date.setId("date");
+        date.setPrefWidth(200);
+        
+        //User name
+        Label user = new Label("@" + msgParts[1]);
+        user.setPrefWidth(100);
+ 
+        //Message body
+        Text messageText = new Text(msgParts[2]);
+        
+        //Pack them enatly into a horizontal box
+        HBox hBox = new HBox();
+        hBox.getChildren().add(date);
+        hBox.getChildren().add(user);
+        hBox.getChildren().add(messageText);
+        hBox.setPrefHeight(20);
+        hBox.setSpacing(10);
+        hBox.setPadding(new Insets(5, 5, 5, 5));
+        hBox.setStyle("-fx-background-color: #DFDFDF; -fx-border-color:  transparent transparent gray transparent");
+        
+        messages.getChildren().add(hBox);
+        messageScroll.setVvalue(1.0);
     }
-}
 
-private void loadMessages() {
-    messages.getChildren().clear();
-    List<String> messages = ChatDBManager.getInstance().getMessages();
-    for (String message : messages) {
-        addMessage(message);
+    private void addRoom(String room) {
+        Tab tab = new Tab(room);
+        tab.setId(room);
+        VBox messagesVBox = new VBox();
+        messagesVBox.setId("messages");
+        tab.setContent(messagesVBox);
+        roomsTabPane.getTabs().add(tab);
     }
-}
+
+    private void loadRooms() {
+        for (String room : ChatDBManager.getInstance().getRooms()) {
+            addRoom(room);
+        }
+    }
+
+    private void loadMessages() {
+        messages.getChildren().clear();
+        for (String msg : ChatDBManager.getInstance().getMessages()) {
+            addMessage(msg);
+        }
+    }
 ```
 
 Következő lépésben hozzuk létre az üzenet küldés és a szoba létrehozás gombhoz tartozó akció metódusokat:
@@ -587,13 +612,16 @@ public void initialize(URL location, ResourceBundle resources) {
     loadOnlineUsers();
     loadRooms();
     loadMessages();
+
+    //Subscribe to tab change events, changing rooms accordingly
     roomsTabPane.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
         @Override
-        public void changed(ObservableValue<? extends Tab> observableValue, Tab tab, Tab t1) {
-            ChatDBManager.getInstance().setCurrentRoom(t1.getId());
+        public void changed(ObservableValue<? extends Tab> observableValue, Tab tab, Tab changedTab) {
+            ChatDBManager.getInstance().setCurrentRoom(changedTab.getId());
             loadMessages();
         }
     });
+
     subscribeToRedisChannels();
 }
 ```
