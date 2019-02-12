@@ -14,15 +14,15 @@ Az előadással egybekötött gyakorlat célja, hogy bemutassuk a `NoSQL` (**N**
 ### Típusai:
 
 1. Kulcs-érték alapú
- * **REDIS**, Voldemort, Riak
+   * **REDIS**, Voldemort, Riak
 2. Oszlopos (vagy tabulált) adatbázis
- * Cassandra, HBase
+   * Cassandra, HBase
 3. Dokumentum alapú
- * MongoDb
+   * MongoDb
 4. Gráf alapú
- * Neo4J, InfoGrid, Infinite Graph
+   * Neo4J, InfoGrid, Infinite Graph
 5. Objektum adatbázisok
- * OrientDB
+   * OrientDB
  
 
 ## Előfeltételek
